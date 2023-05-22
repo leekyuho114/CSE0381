@@ -47,7 +47,7 @@ int main() {
 		return 1;
 	}
 	for (int i = 0; i < len ; i++) {
-		fwrite(&array[i], sizeof(unsigned int), 1, fp); // 4 byte ¾¿ ÆÄÀÏ¿¡ write
+		fwrite(&array[i], sizeof(unsigned int), 1, fp); // 4 byte Â¾Â¿ Ã†Ã„Ã€ÃÂ¿Â¡ write
 	}
 
 	fclose(fp2);
