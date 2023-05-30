@@ -40,9 +40,9 @@ int main() {
 }
 
 int subset_sum(char* input_file, char* output_file) {
-    int n; // input °³¼ö
-    int L=0; // ¸ñÇ¥ sum
-    int subsetSize = 0; // °á°ú 1ÀÏ ½Ã, subset size ÀúÀå
+    int n; // input ê°œìˆ˜
+    int L=0; // ëª©í‘œ sum
+    int subsetSize = 0; // ê²°ê³¼ 1ì¼ ì‹œ, subset size ì €ì¥
     FILE* fp;//input file read
     fopen_s(&fp , input_file, "r");
     if (fp == NULL) {
@@ -50,20 +50,20 @@ int subset_sum(char* input_file, char* output_file) {
         return 1;
     }
     fscanf_s(fp, "%d", &n);
-    // ¹è¿­ input
+    // ë°°ì—´ input
     int* arr = (int*)malloc(n * sizeof(int));
-    //Á¤º¸ÀĞ±â
+    //ì •ë³´ì½ê¸°
     for (int i = 0; i < n; i++) {
         fscanf_s(fp, "%d", &arr[i]);
     }
     fscanf_s(fp, "%d", &L);
     fclose(fp);
-    //2Â÷¿ø table µ¿ÀûÇÒ´ç
+    //2ì°¨ì› table ë™ì í• ë‹¹
     bool ** dp = (bool**)malloc((n+1) * sizeof(bool*));
     for (int i = 0; i < n+1; i++) {
         dp[i] = (bool*)malloc((L+1) * sizeof(bool));
     }
-    //°á°ú index ÀúÀå array µ¿ÀûÇÒ´ç
+    //ê²°ê³¼ index ì €ì¥ array ë™ì í• ë‹¹
     int* result = (int*)malloc((L + 1) * sizeof(int));
     //dp
     for (int i = 0; i <= n; i++) {
@@ -80,14 +80,14 @@ int subset_sum(char* input_file, char* output_file) {
             }
         }
     }
-    //subset sum problem result ÀúÀå
+    //subset sum problem result ì €ì¥
     int i = n, j = L;
     while (i > 0 && j > 0) {
         if (dp[i - 1][j]) {
             i--;
         }
         else {
-            result[subsetSize++] = i - 1; //index ÀúÀå
+            result[subsetSize++] = i - 1; //index ì €ì¥
             j -= arr[i - 1];
             i--;
         }
