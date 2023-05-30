@@ -5,7 +5,7 @@
 #define MAX_FILENAME_LEN 256
 #define MAX_INPUT 201
 #define INF 1e9
-int index; // chords ¹è¿­ index(for recursion)
+int index; // chords ë°°ì—´ index(for recursion)
 typedef struct Point {
     double x;
     double y;
@@ -56,22 +56,22 @@ int minimal_triangle(char* input_file, char* output_file) {
         return 1;
     }
     fscanf_s(fp, "%d", &vertex_num);
-    //2Â÷¿ø table µ¿ÀûÇÒ´ç
+    //2ì°¨ì› table ë™ì í• ë‹¹
     double** dp = (double**)malloc(MAX_INPUT * sizeof(double*)); 
     for (int i = 0; i < MAX_INPUT; i++) {
         dp[i] = (double*)malloc(MAX_INPUT * sizeof(double));
     }
-    //chord print¸¦ À§ÇÑ k°ª ÀúÀå table
+    //chord printë¥¼ ìœ„í•œ kê°’ ì €ì¥ table
     int** index_dp = (int**)malloc(MAX_INPUT * sizeof(int*));
     for (int i = 0; i < MAX_INPUT; i++) {
         index_dp[i] = (int*)malloc(MAX_INPUT * sizeof(int));
     }
-    //chords ÀúÀå array
+    //chords ì €ì¥ array
     int** chords = (int**)malloc((vertex_num-3) * sizeof(int*));
     for (int i = 0; i < vertex_num - 3; i++) {
         chords[i] = (int*)malloc(2 * sizeof(int));
     }
-    // vertex ¹è¿­ points
+    // vertex ë°°ì—´ points
     Point* points = (Point*)malloc(vertex_num * sizeof(Point)); 
     
     for (int i = 0; i < vertex_num; i++) {
@@ -134,7 +134,7 @@ int minimal_triangle(char* input_file, char* output_file) {
     return 0;
 }
 double dist(Point p1, Point p2, int a, int b) {
-    if (a == b + 1 || a == b - 1) {// ¸¸¾à ÀÎÁ¢ point¸é 0 return
+    if (a == b + 1 || a == b - 1) {// ë§Œì•½ ì¸ì ‘ pointë©´ 0 return
         return 0;
     }
     double dx = p1.x - p2.x;
@@ -144,30 +144,30 @@ double dist(Point p1, Point p2, int a, int b) {
 double min(double a, double b) {
     return a < b ? a : b;
 }
-void find_chord(int** index_dp, int** chords, int i, int s) {//nÀº chord¹è¿­ inex
+void find_chord(int** index_dp, int** chords, int i, int s) {//nì€ chordë°°ì—´ inex
     int v1_i, v1_s, v2_i, v2_s;
     v1_i = i;
     v1_s = index_dp[i][s] + 1;
     v2_i = i + index_dp[i][s];
     v2_s = s - index_dp[i][s];
-    if (!(v1_s == 2 || v1_s == 3)) { // v2ÀÇ s°¡ 2,3 ÀÌ ¾Æ´Ñ °æ¿ì
+    if (!(v1_s == 2 || v1_s == 3)) { // v2ì˜ sê°€ 2,3 ì´ ì•„ë‹Œ ê²½ìš°
         chords[index][0] = v1_i;
         chords[index][1] = v1_i + v1_s - 1;
         index++;
         find_chord(index_dp, chords, v1_i, v1_s);
     }
-    else if (v1_s == 3) {// v2ÀÇ s°¡ 3ÀÎ °æ¿ì (2´Â ¹«½Ã)
+    else if (v1_s == 3) {// v2ì˜ sê°€ 3ì¸ ê²½ìš° (2ëŠ” ë¬´ì‹œ)
         chords[index][0] = v1_i;
         chords[index][1] = v1_i + v1_s - 1;
         index++;
     }
-    if (!(v2_s == 2 || v2_s == 3)) { // v2ÀÇ s°¡ 2,3 ÀÌ ¾Æ´Ñ °æ¿ì
+    if (!(v2_s == 2 || v2_s == 3)) { // v2ì˜ sê°€ 2,3 ì´ ì•„ë‹Œ ê²½ìš°
         chords[index][0] = v2_i;
         chords[index][1] = v2_i + v2_s - 1;
         index++;
         find_chord(index_dp, chords,v2_i, v2_s);
     }
-    else if (v2_s == 3) {// v2ÀÇ s°¡ 3ÀÎ °æ¿ì (2´Â ¹«½Ã)
+    else if (v2_s == 3) {// v2ì˜ sê°€ 3ì¸ ê²½ìš° (2ëŠ” ë¬´ì‹œ)
         chords[index][0] = v2_i;
         chords[index][1] = v2_i + v2_s - 1;
         index++;
@@ -177,7 +177,7 @@ int compare(const void* x, const void* y) {
     int* v1 = *(int**)x;
     int* v2 = *(int**)y;
 
-    // ¸ÕÀú x °ª¿¡ ´ëÇØ ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
+    // ë¨¼ì € x ê°’ì— ëŒ€í•´ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
     if (v1[0] < v2[0]) {
         return -1;
     }
@@ -185,7 +185,7 @@ int compare(const void* x, const void* y) {
         return 1;
     }
 
-    // x °ªÀÌ °°Àº °æ¿ì, y °ª¿¡ ´ëÇØ ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
+    // x ê°’ì´ ê°™ì€ ê²½ìš°, y ê°’ì— ëŒ€í•´ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
     if (v1[1] < v2[1]) {
         return -1;
     }
