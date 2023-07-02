@@ -50,7 +50,7 @@ int main() {
     char outPath[512]; // output path
     int n_vertices, n_edges, max_weight;
 
-    //commands.txt Ã³¸®
+    //commands.txt ì²˜ë¦¬
     fopen_s(&fp, "commands.txt", "r");
     if (fp == NULL) {
         printf("Failed to open commands file.\n");
@@ -61,7 +61,7 @@ int main() {
         fclose(fp);
         return 1;
     }
-    if (path[strlen(path) - 1] == '\n') { // °³Çà Á¦°Å
+    if (path[strlen(path) - 1] == '\n') { // ê°œí–‰ ì œê±°
         path[strlen(path) - 1] = '\0';
     }
     if (fgets(input_f, sizeof(input_f), fp) == NULL) {
@@ -69,7 +69,7 @@ int main() {
         fclose(fp);
         return 1;
     }
-    if (input_f[strlen(input_f) - 1] == '\n') { // °³Çà Á¦°Å
+    if (input_f[strlen(input_f) - 1] == '\n') { // ê°œí–‰ ì œê±°
         input_f[strlen(input_f) - 1] = '\0';
     }
     if (fgets(output_f, sizeof(output_f), fp) == NULL) {
@@ -77,12 +77,12 @@ int main() {
         fclose(fp);
         return 1;
     }
-    if (output_f[strlen(output_f) - 1] == '\n') { // °³Çà Á¦°Å
+    if (output_f[strlen(output_f) - 1] == '\n') { // ê°œí–‰ ì œê±°
         output_f[strlen(output_f) - 1] = '\0';
     }
     fclose(fp);
 
-    //graph Á¤º¸ read 
+    //graph ì •ë³´ read 
     sprintf_s(inPath, "%s\\%s", path, input_f);
     //sprintf_s(outPath, "%s", output_f);
     sprintf_s(outPath, "%s\\%s", path, output_f);
@@ -96,7 +96,7 @@ int main() {
     if (fgets(line, sizeof(line), ip) != NULL) {
         sscanf_s(line, "%d %d %d", &n_vertices, &n_edges, &max_weight);
     }
-    //graph »ı¼º
+    //graph ìƒì„±
     int j = 0;
     Graph* graph = create_graph(n_vertices, n_edges);
     while (fgets(line, sizeof(line), ip) != NULL) {
@@ -104,7 +104,7 @@ int main() {
         j++;
     }
     fclose(ip);
-    /* // ÁÖ¼®Ã³¸®
+    /* // ì£¼ì„ì²˜ë¦¬
     clock_t start_time, end_time;
     double execution_time;
     start_time = clock();
@@ -141,7 +141,7 @@ void findMST(const char* outPath, Graph* graph) {
     for (int i = 0; i < V; i++) {
         subsets[i].parent = i;
         subsets[i].rank = 0;
-        subsets[i].total_weight = 0; // parent¿¡ total_weight ÀúÀå, connected component¸¦ À§ÇÔ
+        subsets[i].total_weight = 0; // parentì— total_weight ì €ì¥, connected componentë¥¼ ìœ„í•¨
         subsets[i].numV = 1;
     }
     int edgeCnt = 0;
@@ -160,7 +160,7 @@ void findMST(const char* outPath, Graph* graph) {
     }
     
     for (int i = 0; i < V; i++) {
-        if (subsets[i].parent == i) { // disjoint set¿¡¼­ root ÀÎ °æ¿ì
+        if (subsets[i].parent == i) { // disjoint setì—ì„œ root ì¸ ê²½ìš°
             connected += 1;
         }
     }
@@ -168,21 +168,21 @@ void findMST(const char* outPath, Graph* graph) {
     fopen_s(&op, outPath, "w");
     if (op == NULL) {
         printf("Failed to open output file. %d\n",errno);
-        perror("¿À·ù : ");
+        perror("ì˜¤ë¥˜ : ");
         return;
     }
     fprintf_s(op, "%d\n", connected);
     for (int i = 0; i < V; i++) {
-        if (subsets[i].parent == i) { // disjoint set¿¡¼­ root ÀÎ °æ¿ì
+        if (subsets[i].parent == i) { // disjoint setì—ì„œ root ì¸ ê²½ìš°
             fprintf_s(op,"%d %lld\n", subsets[i].numV, subsets[i].total_weight);
         }
     }
-    //printf("kscanned : %d\n",kscd);//ÁÖ¼®Ã³¸®
+    //printf("kscanned : %d\n",kscd);//ì£¼ì„ì²˜ë¦¬
     
     fclose(op);
     free(subsets);
 }
-int Find(Subset* subsets , int x) {// °æ·Î¾ĞÃà
+int Find(Subset* subsets , int x) {// ê²½ë¡œì••ì¶•
     if (x == subsets[x].parent) {
         return x;
     }
@@ -195,11 +195,11 @@ int Find(Subset* subsets , int x) {// °æ·Î¾ĞÃà
 void Union(Subset* subsets, int a, int b, int64_t weight) {
     int aRoot = Find(subsets, a);
     int bRoot = Find(subsets, b);
-    if (subsets[aRoot].rank > subsets[bRoot].rank) {// µÎ ³ëµåÀÇ parent°¡ °°Àº °æ¿ì ¿¹¿ÜÃ³¸®´Â MST ÇÔ¼ö¿¡¼­ ÇÔ
+    if (subsets[aRoot].rank > subsets[bRoot].rank) {// ë‘ ë…¸ë“œì˜ parentê°€ ê°™ì€ ê²½ìš° ì˜ˆì™¸ì²˜ë¦¬ëŠ” MST í•¨ìˆ˜ì—ì„œ í•¨
         subsets[bRoot].parent = aRoot;
-        subsets[aRoot].total_weight += subsets[bRoot].total_weight; // µÎ subset total weight ´õÇÔ
-        subsets[aRoot].total_weight += weight; //»õ·ÎÃß°¡µÈ edge weight ´õÇÔ
-        subsets[aRoot].numV += subsets[bRoot].numV; // set¿¡ Æ÷ÇÔµÈ vertex °³¼ö ¾÷µ¥ÀÌÆ®
+        subsets[aRoot].total_weight += subsets[bRoot].total_weight; // ë‘ subset total weight ë”í•¨
+        subsets[aRoot].total_weight += weight; //ìƒˆë¡œì¶”ê°€ëœ edge weight ë”í•¨
+        subsets[aRoot].numV += subsets[bRoot].numV; // setì— í¬í•¨ëœ vertex ê°œìˆ˜ ì—…ë°ì´íŠ¸
     }
     else if (subsets[aRoot].rank < subsets[bRoot].rank) {
         subsets[aRoot].parent = bRoot;
@@ -227,7 +227,7 @@ Minheap* create_minheap(int maxSize) {
 void insertEdge(Minheap* minheap, Edge edge) {
     minheap->size++;
     int i = minheap->size - 1;
-    while (i > 0 && edge.weight < minheap->heapList[(i - 1) / 2].weight) {//parent¿Í ºñ±³, target index i¿¡ ÀúÀå
+    while (i > 0 && edge.weight < minheap->heapList[(i - 1) / 2].weight) {//parentì™€ ë¹„êµ, target index iì— ì €ì¥
         minheap->heapList[i] = minheap->heapList[(i - 1) / 2];
         i = (i - 1) / 2;
     }
@@ -235,18 +235,18 @@ void insertEdge(Minheap* minheap, Edge edge) {
 }
 
 Edge deleteEdge(Minheap* minheap) {
-    Edge min = minheap->heapList[0];//¸¶Áö¸· ³ëµå¸¦ root·Î ¿Ã¸®°í heapify
+    Edge min = minheap->heapList[0];//ë§ˆì§€ë§‰ ë…¸ë“œë¥¼ rootë¡œ ì˜¬ë¦¬ê³  heapify
     minheap->heapList[0] = minheap->heapList[minheap->size-1];
     minheap->size--;
     heapify(minheap, 0);
     return min;
 }
 
-void heapify(Minheap* minheap, int idx) {//heapÀ¸·Î ¼öÁ¤ÇØÁÜ
+void heapify(Minheap* minheap, int idx) {//heapìœ¼ë¡œ ìˆ˜ì •í•´ì¤Œ
     int smallest = idx;
     int left = 2 * idx + 1;
     int right = 2 * idx + 2;
-    // left right Áß ´õ ÀÛÀº °ª°ú swap, recusiveÇÏ°Ô È£Ãâ
+    // left right ì¤‘ ë” ì‘ì€ ê°’ê³¼ swap, recusiveí•˜ê²Œ í˜¸ì¶œ
     if (left < minheap->size && minheap->heapList[left].weight < minheap->heapList[smallest].weight) {
         smallest = left;
     }
